@@ -510,7 +510,7 @@ static const char *const yytname[] =
   "STRING_CONST", "INT_CONST", "BOOL_CONST", "IF", "ELSE", "WHILE",
   "RETURN", "READ", "WRITE", "'('", "')'", "'{'", "'}'", "','", "';'",
   "'='", "$accept", "program", "functions", "function", "formals",
-  "formals_non_emtpty", "formal", "decls", "decl", "idents", "ident",
+  "formals_non_empty", "formal", "decls", "decl", "idents", "ident",
   "stmnts", "stmnt", "expr", "actuals", "exprs", YY_NULL
 };
 #endif
@@ -1459,10 +1459,34 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 5:
+        case 2:
+/* Line 1792 of yacc.c  */
+#line 66 ".\\trac42.y"
+    {treeRoot = mProgram((yyvsp[(1) - (1)].yyNode));}
+    break;
+
+  case 3:
+/* Line 1792 of yacc.c  */
+#line 69 ".\\trac42.y"
+    {(yyval.yyNode) = connectFunctions((yyvsp[(1) - (2)].yyNode),(yyvsp[(2) - (2)].yyNode));}
+    break;
+
+  case 4:
+/* Line 1792 of yacc.c  */
+#line 70 ".\\trac42.y"
+    {(yyval.yyNode) = (yyvsp[(1) - (1)].yyNode);}
+    break;
+
+  case 5:
 /* Line 1792 of yacc.c  */
 #line 73 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mFunction(connectVariables((yyvsp[(4) - (9)].yyNode),(yyvsp[(7) - (9)].yyNode)), (yyvsp[(8) - (9)].yyNode), (yyvsp[(2) - (9)].yyString).strVal, (yyvsp[(1) - (9)].yyType).type, (yyvsp[(2) - (9)].yyString).lineNr);}
+    break;
+
+  case 6:
+/* Line 1792 of yacc.c  */
+#line 76 ".\\trac42.y"
+    {(yyval.yyNode) = (yyvsp[(1) - (1)].yyNode);}
     break;
 
   case 7:
@@ -1477,10 +1501,28 @@ yyreduce:
     {(yyval.yyNode) = NULL;}
     break;
 
+  case 9:
+/* Line 1792 of yacc.c  */
+#line 81 ".\\trac42.y"
+    {(yyval.yyNode) = connectVariables((yyvsp[(1) - (3)].yyNode), (yyvsp[(3) - (3)].yyNode));}
+    break;
+
+  case 10:
+/* Line 1792 of yacc.c  */
+#line 82 ".\\trac42.y"
+    {(yyval.yyNode) = (yyvsp[(1) - (1)].yyNode);}
+    break;
+
   case 11:
 /* Line 1792 of yacc.c  */
 #line 85 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mVariable(kFormal, (yyvsp[(2) - (2)].yyString).strVal, (yyvsp[(1) - (2)].yyType).type, (yyvsp[(2) - (2)].yyString).lineNr);}
+    break;
+
+  case 12:
+/* Line 1792 of yacc.c  */
+#line 88 ".\\trac42.y"
+    {(yyval.yyNode) = connectVariables((yyvsp[(1) - (2)].yyNode), (yyvsp[(2) - (2)].yyNode));}
     break;
 
   case 13:
@@ -1492,115 +1534,187 @@ yyreduce:
   case 14:
 /* Line 1792 of yacc.c  */
 #line 92 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = addType((yyvsp[(2) - (3)].yyNode), (yyvsp[(1) - (3)].yyType).type);}
+    break;
+
+  case 15:
+/* Line 1792 of yacc.c  */
+#line 95 ".\\trac42.y"
+    {(yyval.yyNode) = connectVariables((yyvsp[(1) - (3)].yyNode), (yyvsp[(3) - (3)].yyNode));}
+    break;
+
+  case 16:
+/* Line 1792 of yacc.c  */
+#line 96 ".\\trac42.y"
+    {(yyval.yyNode) = (yyvsp[(1) - (1)].yyNode);}
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
 #line 99 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mVariable(kLocal, (yyvsp[(1) - (1)].yyString).strVal, VOID, (yyvsp[(1) - (1)].yyString).lineNr);}
+    break;
+
+  case 18:
+/* Line 1792 of yacc.c  */
+#line 102 ".\\trac42.y"
+    {(yyval.yyNode) = connectStmnts((yyvsp[(1) - (2)].yyNode),(yyvsp[(2) - (2)].yyNode));}
+    break;
+
+  case 19:
+/* Line 1792 of yacc.c  */
+#line 103 ".\\trac42.y"
+    {(yyval.yyNode) = (yyvsp[(1) - (1)].yyNode);}
     break;
 
   case 20:
 /* Line 1792 of yacc.c  */
 #line 106 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mAssign((yyvsp[(1) - (4)].yyString).strVal, (yyvsp[(3) - (4)].yyNode), (yyvsp[(1) - (4)].yyString).lineNr);}
     break;
 
   case 21:
 /* Line 1792 of yacc.c  */
 #line 107 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mIf((yyvsp[(3) - (7)].yyNode), (yyvsp[(5) - (7)].yyNode), (yyvsp[(7) - (7)].yyNode), (yyvsp[(1) - (7)].yyLineNr));}
     break;
 
   case 22:
 /* Line 1792 of yacc.c  */
 #line 108 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mIf((yyvsp[(3) - (5)].yyNode), (yyvsp[(5) - (5)].yyNode), NULL, (yyvsp[(1) - (5)].yyLineNr));}
     break;
 
   case 23:
 /* Line 1792 of yacc.c  */
 #line 109 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mWhile((yyvsp[(3) - (5)].yyNode), (yyvsp[(5) - (5)].yyNode), (yyvsp[(1) - (5)].yyLineNr));}
     break;
 
   case 24:
 /* Line 1792 of yacc.c  */
 #line 110 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mReturn((yyvsp[(2) - (3)].yyNode), (yyvsp[(1) - (3)].yyLineNr));}
     break;
 
   case 25:
 /* Line 1792 of yacc.c  */
 #line 111 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mRead((yyvsp[(2) - (3)].yyString).strVal, (yyvsp[(1) - (3)].yyLineNr));}
     break;
 
   case 26:
 /* Line 1792 of yacc.c  */
 #line 112 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mWrite((yyvsp[(2) - (3)].yyNode), (yyvsp[(1) - (3)].yyLineNr));}
     break;
 
   case 27:
 /* Line 1792 of yacc.c  */
 #line 113 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = (yyvsp[(2) - (3)].yyNode);}
     break;
 
   case 28:
 /* Line 1792 of yacc.c  */
 #line 114 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mFuncCallStmnt((yyvsp[(3) - (5)].yyNode), (yyvsp[(1) - (5)].yyString).strVal, (yyvsp[(1) - (5)].yyString).lineNr);}
     break;
 
   case 29:
 /* Line 1792 of yacc.c  */
 #line 117 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mUnary((yyvsp[(1) - (2)].yyOperator).opType, (yyvsp[(2) - (2)].yyNode), (yyvsp[(1) - (2)].yyOperator).lineNr);}
     break;
 
   case 30:
 /* Line 1792 of yacc.c  */
 #line 118 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mUnary((yyvsp[(1) - (2)].yyOperator).opType, (yyvsp[(2) - (2)].yyNode), (yyvsp[(1) - (2)].yyOperator).lineNr);}
+    break;
+
+  case 31:
+/* Line 1792 of yacc.c  */
+#line 119 ".\\trac42.y"
+    {(yyval.yyNode) = mBinary((yyvsp[(1) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).opType, (yyvsp[(3) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).lineNr);}
+    break;
+
+  case 32:
+/* Line 1792 of yacc.c  */
+#line 120 ".\\trac42.y"
+    {(yyval.yyNode) = mBinary((yyvsp[(1) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).opType, (yyvsp[(3) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).lineNr);}
+    break;
+
+  case 33:
+/* Line 1792 of yacc.c  */
+#line 121 ".\\trac42.y"
+    {(yyval.yyNode) = mBinary((yyvsp[(1) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).opType, (yyvsp[(3) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).lineNr);}
+    break;
+
+  case 34:
+/* Line 1792 of yacc.c  */
+#line 122 ".\\trac42.y"
+    {(yyval.yyNode) = mBinary((yyvsp[(1) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).opType, (yyvsp[(3) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).lineNr);}
+    break;
+
+  case 35:
+/* Line 1792 of yacc.c  */
+#line 123 ".\\trac42.y"
+    {(yyval.yyNode) = mBinary((yyvsp[(1) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).opType, (yyvsp[(3) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).lineNr);}
+    break;
+
+  case 36:
+/* Line 1792 of yacc.c  */
+#line 124 ".\\trac42.y"
+    {(yyval.yyNode) = mBinary((yyvsp[(1) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).opType, (yyvsp[(3) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).lineNr);}
+    break;
+
+  case 37:
+/* Line 1792 of yacc.c  */
+#line 125 ".\\trac42.y"
+    {(yyval.yyNode) = mBinary((yyvsp[(1) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).opType, (yyvsp[(3) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).lineNr);}
     break;
 
   case 38:
 /* Line 1792 of yacc.c  */
 #line 126 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = (yyvsp[(2) - (3)].yyNode);}
     break;
 
   case 39:
 /* Line 1792 of yacc.c  */
 #line 127 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mFuncCallExpr((yyvsp[(3) - (4)].yyNode), (yyvsp[(1) - (4)].yyString).strVal, (yyvsp[(1) - (4)].yyString).lineNr);}
     break;
 
   case 40:
 /* Line 1792 of yacc.c  */
 #line 128 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mRValue((yyvsp[(1) - (1)].yyString).strVal, (yyvsp[(1) - (1)].yyString).lineNr);}
     break;
 
   case 41:
 /* Line 1792 of yacc.c  */
 #line 129 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mIntConst((yyvsp[(1) - (1)].yyInt).intVal, (yyvsp[(1) - (1)].yyInt).lineNr);}
     break;
 
   case 42:
 /* Line 1792 of yacc.c  */
 #line 130 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mBoolConst((yyvsp[(1) - (1)].yyInt).intVal, (yyvsp[(1) - (1)].yyInt).lineNr);}
     break;
 
   case 43:
 /* Line 1792 of yacc.c  */
 #line 131 ".\\trac42.y"
-    {(yyval.yyNode) = NULL;}
+    {(yyval.yyNode) = mStringConst((yyvsp[(1) - (1)].yyString).strVal, (yyvsp[(1) - (1)].yyString).lineNr);}
+    break;
+
+  case 44:
+/* Line 1792 of yacc.c  */
+#line 134 ".\\trac42.y"
+    {(yyval.yyNode) = (yyvsp[(1) - (1)].yyNode);}
     break;
 
   case 45:
@@ -1609,9 +1723,21 @@ yyreduce:
     {(yyval.yyNode) = NULL;}
     break;
 
+  case 46:
+/* Line 1792 of yacc.c  */
+#line 138 ".\\trac42.y"
+    {(yyval.yyNode) = connectActuals((yyvsp[(1) - (3)].yyNode), (yyvsp[(3) - (3)].yyNode));}
+    break;
+
+  case 47:
+/* Line 1792 of yacc.c  */
+#line 139 ".\\trac42.y"
+    {(yyval.yyNode) = mActual((yyvsp[(1) - (1)].yyNode));}
+    break;
+
 
 /* Line 1792 of yacc.c  */
-#line 1615 ".\\trac42.y.c"
+#line 1741 ".\\trac42.y.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
