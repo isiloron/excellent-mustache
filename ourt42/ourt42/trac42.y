@@ -22,6 +22,7 @@
 #include "symtab.h"
 #include "emit.h"
 #include "trac42.y.h"   /* Declaration of tokens, genereated by bison. */
+#include "printAST.h"
 
 extern FILE *yyin;
 int yyerror(const char *s);
@@ -169,6 +170,8 @@ int main (int argc, char *argv[])
          syntax_errors = yyparse();
          if (!syntax_errors) {
             fprintf (stderr, "The answer is 42\n");
+			printAST(treeRoot);
+			system("PAUSE");
          } else {
             fprintf (stderr, "There were syntax errors.\n");
          }

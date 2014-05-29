@@ -74,7 +74,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 32 ".\\trac42.y"
+#line 33 ".\\trac42.y"
 
    t_tree       yyNode;
    intStruct    yyInt;
