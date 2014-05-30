@@ -75,6 +75,7 @@
     <ClInclude Include="symtab.h" />
     <ClInclude Include="trac42.h" />
     <ClInclude Include="trac42.y.h" />
+    <ClInclude Include="typeCheck.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +89,7 @@
     <ClCompile Include="printAST.c" />
     <ClCompile Include="symtab.c" />
     <ClCompile Include="trac42.y.c" />
+    <ClCompile Include="typeCheck.c" />
     <ClCompile Include="utils.c" />
   </ItemGroup>
   <ItemGroup>
