@@ -23,6 +23,7 @@
 #include "emit.h"
 #include "trac42.y.h"   /* Declaration of tokens, genereated by bison. */
 #include "printAST.h"
+#include "nameAnalysis.h"
 
 extern FILE *yyin;
 int yyerror(const char *s);
@@ -64,7 +65,8 @@ int yylex(void);
 
 %%
 
-program     : functions {treeRoot = mProgram($1);}
+program     : functions {treeRoot = mProgram($1);
+                          }
             ;
 
 functions   : functions function {$$ = connectFunctions($1,$2);}
@@ -101,7 +103,7 @@ ident       : ID {$$ = mVariable(kLocal, $1.strVal, VOID, $1.lineNr);}
             ;
 
 stmnts      : stmnts stmnt {$$ = connectStmnts($1,$2);}
-            | stmnt {$$ = $1;}
+            | {$$ = NULL;}
             ;
 
 stmnt       : ID '=' expr ';'                       {$$ = mAssign($1.strVal, $3, $1.lineNr);}
@@ -170,6 +172,7 @@ int main (int argc, char *argv[])
          syntax_errors = yyparse();
          if (!syntax_errors) {
             fprintf (stderr, "The answer is 42\n");
+            if(!nameAnalysis(treeRoot,NULL,NULL)){YYERROR;}
 			printAST(treeRoot);
 			system("PAUSE");
          } else {

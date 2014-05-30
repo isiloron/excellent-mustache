@@ -45,6 +45,9 @@
     <ClInclude Include="printAST.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="nameAnalysis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="array.c">
@@ -75,6 +78,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="printAST.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="nameAnalysis.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -8,6 +8,8 @@
 #ifndef _AST_H_
 #define _AST_H_
 
+#include "symtab.h"
+
 typedef struct t_tree *t_tree;
 
 /* Size of data types in trac42 */
