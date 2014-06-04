@@ -4,8 +4,8 @@
 
 eType typeCheck(t_tree current, t_tree funcVars)
 {
-	eType left = NULL;
-	eType right = NULL;
+	eType left;
+	eType right;
 	if (current == NULL)
 		return;
 
@@ -23,6 +23,8 @@ eType typeCheck(t_tree current, t_tree funcVars)
 	case kFuncCallStmnt:
 	case kActual:
 	case kUnary:
+		if(typeCheck(current->Node.Binary.LeftOperand, funcVars)==INVALID_TYPE)
+			typeCheck(current->Node.Binary.LeftOperand, funcVars)
 	case kBinary:
 		left = typeCheck(current->Node.Binary.LeftOperand, funcVars);
 		right = typeCheck(current->Node.Binary.RightOperand, funcVars);
@@ -39,15 +41,16 @@ eType typeCheck(t_tree current, t_tree funcVars)
 		}
 		else if (left != right)
 		{
-			fprintf(stderr, "Right and left operand, are not of the same type! Line: %d ", current->LineNr);
-			return INVALID_TYPE;
+			if (!((left == BOOL && right == INT) && -1 < right < 2) || !((right == BOOL && left == INT) && -1 < left < 2))
+			{
+				fprintf(stderr, "Right and left operand, are not of the same type! Line: %d ", current->LineNr);
+				return INVALID_TYPE;
+			}
 		}
 		else
 		{
 			return left;
 		}
-
-		/*TODO BOOL-operators!!!!!!!!! */
 	case kIntConst:
 		return INT;
 	case kBoolConst:
@@ -59,7 +62,6 @@ eType typeCheck(t_tree current, t_tree funcVars)
 		return lookup(funcVars, current->Node.RValue.Id);
 	default:
 		break;
-
 	}
 }
 
