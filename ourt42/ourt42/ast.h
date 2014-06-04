@@ -53,7 +53,7 @@ typedef enum { SUB=MINUS, PLUS, MULT, DIV, OR, AND, EQ, LT, LE } BINOP_KIND;
 typedef enum {kFormal, kLocal} vKind;
 
 /* To distinguish between the data types in the trac42 language. */
-typedef enum {VOID, BOOL, INT, STRING, INVALID_TYPE} eType;
+typedef enum {VOID, BOOL, INT, STRING, INVALID_TYPE, VALID_TYPE} eType;
 
 /* The program. */
 typedef struct {
@@ -206,6 +206,7 @@ typedef struct s_SymTabData {
     int Offset;
     eType Type;
     vKind VarKind;
+	t_tree Vars;
 } SymTabData;
 
 extern t_tree treeRoot;

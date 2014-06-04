@@ -27,6 +27,7 @@ int nameAnalysis(t_tree current)
         symtab_add(funcSymTab, current->Node.Function.Name);
         symtab_set(funcSymTab, current->Node.Function.Name, (void *)malloc(sizeof(SymTabData)));
         ((SymTabData*)symtab_get(funcSymTab, current->Node.Function.Name))->Type = current->Node.Function.Type;
+		((SymTabData*)symtab_get(funcSymTab, current->Node.Function.Name))->Vars = current->Node.Function.Variables;
         return nameAnalysis(current->Node.Function.Variables)
             && nameAnalysis(current->Node.Function.Stmnts)
             && nameAnalysis(current->Node.Function.Next);

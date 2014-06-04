@@ -1,7 +1,7 @@
 #ifndef TYPECHECK_H
 #define TYPECHECK_H
 
-#include "ast.h"
+eType typeCheck(t_tree current);
 
 
 
