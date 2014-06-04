@@ -53,7 +53,7 @@ typedef enum { SUB=MINUS, PLUS, MULT, DIV, OR, AND, EQ, LT, LE } BINOP_KIND;
 typedef enum {kFormal, kLocal} vKind;
 
 /* To distinguish between the data types in the trac42 language. */
-typedef enum {VOID, BOOL, INT, STRING} eType;
+typedef enum {VOID, BOOL, INT, STRING, INVALID_TYPE} eType;
 
 /* The program. */
 typedef struct {
@@ -146,7 +146,7 @@ typedef struct {
 /* The binary expression. */
 typedef struct {
    t_tree LeftOperand;      /* The left hand side sub-expression to operate on. */
-   BINOP_KIND Operator; /* The operator type */
+   BINOP_KIND Operator;		/* The operator type */
    t_tree RightOperand;     /* The right hand side sub-expression to operate on. */
 } yBinary;
 
