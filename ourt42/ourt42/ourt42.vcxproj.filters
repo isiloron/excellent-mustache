@@ -40,6 +40,9 @@
     <ClCompile Include="utils.c">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="offsetCalc.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="array.h">
@@ -79,6 +82,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="utils.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="offsetCalc.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

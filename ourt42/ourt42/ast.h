@@ -205,7 +205,6 @@ struct t_tree {
 typedef struct s_SymTabData {
     int Offset;
     eType Type;
-    vKind VarKind;
 } SymTabData;
 
 extern t_tree treeRoot;

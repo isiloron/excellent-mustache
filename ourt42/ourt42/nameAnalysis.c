@@ -41,7 +41,6 @@ int nameAnalysis(t_tree current)
             symtab_add(varSymTab, current->Node.Variable.Name);
             symtab_set(varSymTab, current->Node.Variable.Name, (void *)malloc(sizeof(SymTabData)));
             ((SymTabData *)symtab_get(varSymTab, current->Node.Variable.Name))->Type = current->Node.Variable.Type;
-            ((SymTabData *)symtab_get(varSymTab, current->Node.Variable.Name))->VarKind = current->Node.Variable.VarKind;
             return nameAnalysis(current->Node.Variable.Next);
         }
     case kAssign:

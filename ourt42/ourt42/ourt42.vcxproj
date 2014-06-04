@@ -71,6 +71,7 @@
     <ClInclude Include="emit.h" />
     <ClInclude Include="hash.h" />
     <ClInclude Include="llist.h" />
+    <ClInclude Include="offsetCalc.h" />
     <ClInclude Include="printAST.h" />
     <ClInclude Include="semanticAnalysis.h" />
     <ClInclude Include="symtab.h" />
@@ -87,6 +88,7 @@
     <ClCompile Include="hash.c" />
     <ClCompile Include="lex.yy.c" />
     <ClCompile Include="llist.c" />
+    <ClCompile Include="offsetCalc.c" />
     <ClCompile Include="printAST.c" />
     <ClCompile Include="semanticAnalysis.c" />
     <ClCompile Include="symtab.c" />
