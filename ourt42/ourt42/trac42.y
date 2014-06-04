@@ -22,8 +22,7 @@
 #include "symtab.h"
 #include "emit.h"
 #include "trac42.y.h"   /* Declaration of tokens, genereated by bison. */
-#include "printAST.h"
-#include "nameAnalysis.h"
+#include "semanticAnalysis.h"
 
 extern FILE *yyin;
 int yyerror(const char *s);
@@ -171,13 +170,12 @@ int main (int argc, char *argv[])
 
          syntax_errors = yyparse();
          if (!syntax_errors) {
-            fprintf (stderr, "The answer is 42\n");
-            if(!nameAnalysis(treeRoot,NULL,NULL)){YYERROR;}
-			printAST(treeRoot);
+            fprintf (stderr, "No syntax errors.\n");
 			system("PAUSE");
          } else {
             fprintf (stderr, "There were syntax errors.\n");
          }
+         semanticAnalysis();
          free(basename);
          free(objname);
          free(lstname);

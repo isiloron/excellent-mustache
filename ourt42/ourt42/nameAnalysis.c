@@ -1,8 +1,11 @@
 
 #include <stdio.h>
-#include "nameAnalysis.h"
+#include "ast.h"
 
-int nameAnalysis(t_tree current, t_symtab *funcSymTab, t_symtab *varSymTab)
+t_symtab *funcSymTab;
+t_symtab *varSymTab;
+
+int nameAnalysis(t_tree current)
 {
     if (current == NULL)
         return 1;
@@ -10,38 +13,23 @@ int nameAnalysis(t_tree current, t_symtab *funcSymTab, t_symtab *varSymTab)
     switch (current->Kind)
     {
     case kProgram:
-        funcSymTab = symtab_create();
-        if (nameAnalysis(current->Node.Program.Functions, funcSymTab, varSymTab))
-        {
-            symtab_destroy(funcSymTab, NULL);
-            return 1;
-        }
-        else
-        {
-            symtab_destroy(funcSymTab, NULL);
-            return 0;
-        }
+        current->Node.Program.SymTab = symtab_create();
+        funcSymTab = current->Node.Program.SymTab;
+        return nameAnalysis(current->Node.Program.Functions);
     case kFunction:
-        varSymTab = symtab_create();
+        current->Node.Function.SymTab = symtab_create();
+        varSymTab = current->Node.Function.SymTab;
         if (symtab_exist(funcSymTab, current->Node.Function.Name))
         {
             fprintf(stderr, "Function name %s allready defined! Line: %d ", current->Node.Function.Name, current->LineNr);
-            symtab_destroy(varSymTab, NULL);
             return 0;
         }
         symtab_add(funcSymTab, current->Node.Function.Name);
-        if (nameAnalysis(current->Node.Function.Variables, funcSymTab, varSymTab)
-            && nameAnalysis(current->Node.Function.Stmnts, funcSymTab, varSymTab)
-            && nameAnalysis(current->Node.Function.Next, funcSymTab, varSymTab))
-        {
-            symtab_destroy(varSymTab, NULL);
-            return 1;
-        }
-        else
-        {
-            symtab_destroy(varSymTab, NULL);
-            return 0;
-        }
+        symtab_set(funcSymTab, current->Node.Function.Name, (void *)malloc(sizeof(SymTabData)));
+        ((SymTabData*)symtab_get(funcSymTab, current->Node.Function.Name))->Type = current->Node.Function.Type;
+        return nameAnalysis(current->Node.Function.Variables)
+            && nameAnalysis(current->Node.Function.Stmnts)
+            && nameAnalysis(current->Node.Function.Next);
     case kVariable:
         if (symtab_exist(varSymTab, current->Node.Variable.Name))
         {
@@ -51,13 +39,16 @@ int nameAnalysis(t_tree current, t_symtab *funcSymTab, t_symtab *varSymTab)
         else
         {
             symtab_add(varSymTab, current->Node.Variable.Name);
-            return nameAnalysis(current->Node.Variable.Next, funcSymTab, varSymTab);
+            symtab_set(varSymTab, current->Node.Variable.Name, (void *)malloc(sizeof(SymTabData)));
+            ((SymTabData *)symtab_get(varSymTab, current->Node.Variable.Name))->Type = current->Node.Variable.Type;
+            ((SymTabData *)symtab_get(varSymTab, current->Node.Variable.Name))->VarKind = current->Node.Variable.VarKind;
+            return nameAnalysis(current->Node.Variable.Next);
         }
     case kAssign:
         if (symtab_exist(varSymTab, current->Node.Assign.Id))
         {
-            return nameAnalysis(current->Node.Assign.Expr, funcSymTab, varSymTab)
-                && nameAnalysis(current->Node.Assign.Next, funcSymTab, varSymTab);
+            return nameAnalysis(current->Node.Assign.Expr)
+                && nameAnalysis(current->Node.Assign.Next);
         }
         else
         {
@@ -65,18 +56,18 @@ int nameAnalysis(t_tree current, t_symtab *funcSymTab, t_symtab *varSymTab)
             return 0;
         }
     case kIf:
-        return nameAnalysis(current->Node.If.Expr, funcSymTab, varSymTab)
-            && nameAnalysis(current->Node.If.Then, funcSymTab, varSymTab)
-            && nameAnalysis(current->Node.If.Else, funcSymTab, varSymTab)
-            && nameAnalysis(current->Node.If.Next, funcSymTab, varSymTab);
+        return nameAnalysis(current->Node.If.Expr)
+            && nameAnalysis(current->Node.If.Then)
+            && nameAnalysis(current->Node.If.Else)
+            && nameAnalysis(current->Node.If.Next);
     case kWhile:
-        return nameAnalysis(current->Node.While.Expr, funcSymTab, varSymTab)
-            && nameAnalysis(current->Node.While.Stmnt, funcSymTab, varSymTab)
-            && nameAnalysis(current->Node.While.Next, funcSymTab, varSymTab);
+        return nameAnalysis(current->Node.While.Expr)
+            && nameAnalysis(current->Node.While.Stmnt)
+            && nameAnalysis(current->Node.While.Next);
     case kRead:
         if (symtab_exist(varSymTab, current->Node.Read.Id))
         {
-            return nameAnalysis(current->Node.Read.Next, funcSymTab, varSymTab);
+            return nameAnalysis(current->Node.Read.Next);
         }
         else
         {
@@ -84,16 +75,16 @@ int nameAnalysis(t_tree current, t_symtab *funcSymTab, t_symtab *varSymTab)
             return 0;
         }
     case kWrite:
-        return nameAnalysis(current->Node.Write.Expr, funcSymTab, varSymTab)
-            && nameAnalysis(current->Node.Write.Next, funcSymTab, varSymTab);
+        return nameAnalysis(current->Node.Write.Expr)
+            && nameAnalysis(current->Node.Write.Next);
     case kReturn:
-        return nameAnalysis(current->Node.Return.Expr, funcSymTab, varSymTab)
-            && nameAnalysis(current->Node.Return.Next, funcSymTab, varSymTab);
+        return nameAnalysis(current->Node.Return.Expr)
+            && nameAnalysis(current->Node.Return.Next);
     case kFuncCallStmnt:
         if (symtab_exist(funcSymTab, current->Node.FuncCallStmnt.FuncName))
         {
-            return nameAnalysis(current->Node.FuncCallStmnt.Actuals, funcSymTab, varSymTab)
-                && nameAnalysis(current->Node.FuncCallStmnt.Next, funcSymTab, varSymTab);
+            return nameAnalysis(current->Node.FuncCallStmnt.Actuals)
+                && nameAnalysis(current->Node.FuncCallStmnt.Next);
         }
         else
         {
@@ -101,17 +92,17 @@ int nameAnalysis(t_tree current, t_symtab *funcSymTab, t_symtab *varSymTab)
             return 0;
         }
     case kActual:
-        return nameAnalysis(current->Node.Actual.Expr, funcSymTab, varSymTab)
-            && nameAnalysis(current->Node.Actual.Next, funcSymTab, varSymTab);
+        return nameAnalysis(current->Node.Actual.Expr)
+            && nameAnalysis(current->Node.Actual.Next);
     case kUnary:
-        return nameAnalysis(current->Node.Unary.Expr, funcSymTab, varSymTab);
+        return nameAnalysis(current->Node.Unary.Expr);
     case kBinary:
-        return nameAnalysis(current->Node.Binary.LeftOperand, funcSymTab, varSymTab)
-            && nameAnalysis(current->Node.Binary.RightOperand, funcSymTab, varSymTab);
+        return nameAnalysis(current->Node.Binary.LeftOperand)
+            && nameAnalysis(current->Node.Binary.RightOperand);
     case kFuncCallExpr:
         if (symtab_exist(funcSymTab, current->Node.FuncCallExpr.FuncName))
         {
-            return nameAnalysis(current->Node.FuncCallExpr.Actuals, funcSymTab, varSymTab);
+            return nameAnalysis(current->Node.FuncCallExpr.Actuals);
         }
         else
         {

@@ -58,6 +58,7 @@ typedef enum {VOID, BOOL, INT, STRING} eType;
 /* The program. */
 typedef struct {
    t_tree Functions;  /* A list of functions in the program. */
+   t_symtab *SymTab;
 } yProgram;
 
 /* The function. */
@@ -67,6 +68,7 @@ typedef struct {
    t_tree Stmnts;     /* A list of statements at the top level in the funktion. */
    char *Name;       /* The function name. */
    eType Type;       /* The return type. */
+   t_symtab *SymTab;
 } yFunction;
 
 /* The variable (local variable or formal parameter). */
@@ -199,6 +201,12 @@ struct t_tree {
       yRValue RValue;
    } Node;
 };
+
+typedef struct s_SymTabData {
+    int Offset;
+    eType Type;
+    vKind VarKind;
+} SymTabData;
 
 extern t_tree treeRoot;
 

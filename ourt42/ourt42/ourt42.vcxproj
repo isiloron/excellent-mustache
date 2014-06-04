@@ -72,6 +72,7 @@
     <ClInclude Include="hash.h" />
     <ClInclude Include="llist.h" />
     <ClInclude Include="printAST.h" />
+    <ClInclude Include="semanticAnalysis.h" />
     <ClInclude Include="symtab.h" />
     <ClInclude Include="trac42.h" />
     <ClInclude Include="trac42.y.h" />
@@ -86,6 +87,7 @@
     <ClCompile Include="lex.yy.c" />
     <ClCompile Include="llist.c" />
     <ClCompile Include="printAST.c" />
+    <ClCompile Include="semanticAnalysis.c" />
     <ClCompile Include="symtab.c" />
     <ClCompile Include="trac42.y.c" />
     <ClCompile Include="utils.c" />
