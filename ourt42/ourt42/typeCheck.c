@@ -2,18 +2,20 @@
 #include "typeCheck.h"
 #include "ast.h"
 
-eType funcReturnType;
-eType returnType;
+
+
 eType left;
 eType right;
-eType unaryExprType;
+eType exprType;
+UNOP_KIND unaryOp;
+BINOP_KIND binaryOp;
 t_symtab *funcSymTab, *varSymTab;
 char *currentFuncName;
 
 eType typeCheck(t_tree current)
 {
 	if (current == NULL)
-		return;
+		return VALID_TYPE;
 
 	switch (current->Kind)
 	{
@@ -37,20 +39,30 @@ eType typeCheck(t_tree current)
 			return INVALID_TYPE;
 		}
 	case kIf:
-		if (typeCheck(current->Node.If.Expr) == VALID_TYPE
-			&& typeCheck(current->Node.If.Then) == VALID_TYPE
+        exprType = typeCheck(current->Node.If.Expr);
+        if (exprType != BOOL && exprType != INT)
+        {
+            fprintf(stderr,"Unexpected type in condition! Line: %d\n",current->LineNr);
+            return INVALID_TYPE;
+        }
+        else if(typeCheck(current->Node.If.Then) == VALID_TYPE
 			&& typeCheck(current->Node.If.Else) == VALID_TYPE
 			&& typeCheck(current->Node.If.Next) == VALID_TYPE)
 			return VALID_TYPE;
 		else
 			return INVALID_TYPE;
 	case kWhile:
-		if (typeCheck(current->Node.While.Expr) == VALID_TYPE
-			&& typeCheck(current->Node.While.Stmnt) == VALID_TYPE
+        exprType = typeCheck(current->Node.While.Expr);
+        if (exprType != BOOL && exprType != INT)
+        {
+            fprintf(stderr, "Unexpected type in condition! Line: %d\n", current->LineNr);
+            return INVALID_TYPE;
+        }
+		else if (typeCheck(current->Node.While.Stmnt) == VALID_TYPE
 			&& typeCheck(current->Node.While.Next) == VALID_TYPE)
 			return VALID_TYPE;
-		else
-			return INVALID_TYPE;
+        else
+            return INVALID_TYPE;
 	case kReturn:
 		if (lookup(funcSymTab, currentFuncName) == VOID)
 		{
@@ -60,21 +72,30 @@ eType typeCheck(t_tree current)
 		else if (typeCheck(current->Node.Return.Expr) == lookup(funcSymTab, currentFuncName)
 			&& typeCheck(current->Node.Return.Next) == VALID_TYPE)
 			return VALID_TYPE;
-		else
-			return INVALID_TYPE;
+        else
+        {
+            fprintf(stderr,"Value type doen't match function return type! Line: %d",current->LineNr);
+            return INVALID_TYPE;
+        }
 	case kFuncCallStmnt:
-		if (typeCheck(current->Node.FuncCallStmnt.Actuals) == VALID_TYPE)
-			return typeCheck(current->Node.FuncCallStmnt.Next);
-		else
-			return INVALID_TYPE;
-	case kActual:
-		typeCheck(current->Node.Actual.Expr);
-		return typeCheck(current->Node.Actual.Next);
+        if (checkActuals(current->Node.FuncCallStmnt.Actuals,
+            ((SymTabData*)symtab_get(funcSymTab, current->Node.FuncCallStmnt.FuncName))->Vars) == VALID_TYPE)
+            return typeCheck(current->Node.FuncCallStmnt.Next);
+        else
+        {
+            fprintf(stderr, "Actuals doesn't match parameters! Line: %d\n", current->LineNr);
+            return INVALID_TYPE;
+        }
 	case kUnary:
-		unaryExprType = typeCheck(current->Node.Unary.Expr);
-		if (current->Node.Unary.Operator == NOT
-			&& (unaryExprType == BOOL || unaryExprType == INT))
-			return BOOL;
+		exprType = typeCheck(current->Node.Unary.Expr);
+        unaryOp = current->Node.Unary.Operator;
+
+        if (unaryOp == NOT
+            && (exprType == BOOL || exprType == INT))
+            return BOOL;
+        else if (unaryOp == NEG
+            && exprType == INT)
+            return INT;
 		else
 		{
 			fprintf(stderr, "Unary expr, invalid type! Line: %d ", current->LineNr);
@@ -83,6 +104,7 @@ eType typeCheck(t_tree current)
 	case kBinary:
 		left = typeCheck(current->Node.Binary.LeftOperand);
 		right = typeCheck(current->Node.Binary.RightOperand);
+        binaryOp = current->Node.Binary.Operator;
 
 		if (left == INVALID_TYPE || right == INVALID_TYPE)
 		{
@@ -113,13 +135,18 @@ eType typeCheck(t_tree current)
 	case kStringConst:
 		return STRING;
 	case kFuncCallExpr:
-		return typeCheck(current->Node.FuncCallExpr.Actuals);
+        if (checkActuals(current->Node.FuncCallExpr.Actuals,
+            ((SymTabData*)symtab_get(funcSymTab, current->Node.FuncCallExpr.FuncName))->Vars) == VALID_TYPE)
+            return ((SymTabData*)symtab_get(funcSymTab, current->Node.FuncCallExpr.FuncName))->Type;
+        else
+        {
+            fprintf(stderr, "Actuals doesn't match parameters! Line: %d", current->LineNr);
+            return INVALID_TYPE;
+        }
 	case kRValue:
-		return lookup(funcVars, current->Node.RValue.Id);
+		return lookup(varSymTab, current->Node.RValue.Id);
 	default:
-		fprintf(stderr, "What the hell is this shit? 0o Line: %d ", current->LineNr);
-		return INVALID_TYPE;
-		break;
+		return VALID_TYPE;
 	}
 }
 
@@ -130,4 +157,28 @@ eType lookup(t_symtab *SymTab, char* id)
 	if (data == NULL)
 		return INVALID_TYPE;
 	return data->Type;
+}
+
+eType checkActuals(t_tree actual, t_tree parameter)
+{
+    if (actual == NULL)
+    {
+        if (parameter == NULL)
+            return VALID_TYPE;
+        else if (parameter->Node.Variable.VarKind == kLocal)
+            return VALID_TYPE;
+        else //paramter is formal
+            return INVALID_TYPE;
+    }
+    else //actual != null
+    {
+        if (parameter == NULL)
+            return INVALID_TYPE;
+        else if (parameter->Node.Variable.VarKind == kLocal)
+            return INVALID_TYPE;
+        else if (typeCheck(actual->Node.Actual.Expr) == parameter->Node.Variable.Type)
+            return checkActuals(actual->Node.Actual.Next, parameter->Node.Variable.Next);
+        else
+            return INVALID_TYPE;
+    }
 }

@@ -87,7 +87,7 @@ void llist_insert_at(t_llist *l, void *data, void *where)
    r = find_record(l->first, where);
    if (r) {
       if (r == l->first)
-         return llist_insert_first(l, data);
+         llist_insert_first(l, data);
       nr = make_record(l, data);
       nr->prev = r->prev;
       nr->next = r;

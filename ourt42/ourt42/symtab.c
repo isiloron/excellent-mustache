@@ -175,7 +175,7 @@ extern int symtab_setup_search_table(t_symtab *symtab)
    if (symtab->lookup_table) {
       hash_destroy(symtab->lookup_table);
    }
-   symtab->lookup_table = hash_create(llist_size(symtab->list)*1.33);
+   symtab->lookup_table = hash_create((unsigned int)(llist_size(symtab->list)*1.33));
    llist_iterate(symtab->list, add_to_hash_table, &ok);
    return ok;
 }

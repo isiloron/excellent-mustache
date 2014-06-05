@@ -339,8 +339,7 @@ int code_buffer_print(tCode *code, const char *list_file, const char *obj_file)
 
 int code_buffer_print(tCode *code, const char *list_file)
 {
-   FILE *lfile, *ofile;
-   int n;
+    FILE *lfile;
    t_iterator *i;
 
    lfile = fopen(list_file, "w");
