@@ -3,10 +3,8 @@
 
 tCode* codeBuffer;
 t_symtab *funcSymTab, *varSymTab;
-int offset;
-eType type;
-tInstr *instrPtr1, *instrPtr2;
-int instrAddr;
+t_tree currentFunction;
+t_tree iterator;
 
 void codeGen(char* lstname)
 {
@@ -18,6 +16,11 @@ void codeGen(char* lstname)
 
 void generateCode(t_tree current)
 {
+    int offset;
+    eType type;
+    tInstr *instrPtr1, *instrPtr2;
+    int instrAddr;
+
 	if (current == NULL)
 		return;
 
@@ -31,8 +34,9 @@ void generateCode(t_tree current)
 		return;
 	case kFunction:
 		varSymTab = current->Node.Function.SymTab;
-		emit_fun_label(codeBuffer, current->Node.Function.Name);
+        currentFunction = current;
 		((SymTabData*)symtab_get(funcSymTab, current->Node.Function.Name))->funcStart = get_next_address(codeBuffer);
+        emit_fun_label(codeBuffer, current->Node.Function.Name);
 		emit_link(codeBuffer);
 		generateCode(current->Node.Function.Variables);
 		generateCode(current->Node.Function.Stmnts);
@@ -82,6 +86,7 @@ void generateCode(t_tree current)
 		type = ((SymTabData*)symtab_get(varSymTab, current->Node.Read.Id))->Type;
 		emit_lval(codeBuffer, offset, NULL);
 		emit_read(codeBuffer, type);
+        emit_ass(codeBuffer, type);
 		generateCode(current->Node.Read.Next);
 		return;
 	case kWrite:
@@ -89,10 +94,10 @@ void generateCode(t_tree current)
 		generateCode(current->Node.Write.Expr);
 		emit_write(codeBuffer, type);
 		emit_pop(codeBuffer, type==STRING?100:1);
-		generateCode(codeBuffer);
+		generateCode(current->Node.Write.Next);
 		return;
 	case kReturn:
-		offset = ((SymTabData*)symtab_get(varSymTab, current->Node.Return.Expr))->Offset;
+        offset = ((SymTabData*)symtab_get(funcSymTab, currentFunction->Node.Function.Name))->RetValOffset;
 		type = typeCheck(current->Node.Return.Expr);
 		emit_lval(codeBuffer, offset, NULL);
 		generateCode(current->Node.Return.Expr);
@@ -176,10 +181,9 @@ void generateCode(t_tree current)
 		type = ((SymTabData*)symtab_get(funcSymTab, current->Node.FuncCallExpr.FuncName))->Type;
 		instrAddr = ((SymTabData*)symtab_get(funcSymTab, current->Node.FuncCallExpr.FuncName))->funcStart;
 		emit_decl(codeBuffer, type == STRING ? 100 : 1, NULL);
-		generateCode(current->Node.FuncCallStmnt.Actuals);
+        generateCode(current->Node.FuncCallExpr.Actuals);
 		set_address(emit_bsr(codeBuffer), instrAddr);
-		popActuals(current->Node.FuncCallStmnt.Actuals);
-		generateCode(current->Node.FuncCallStmnt.Next);
+        popActuals(current->Node.FuncCallExpr.Actuals);
 		return;
 	case kRValue:
 		type = ((SymTabData*)symtab_get(varSymTab, current->Node.RValue.Id))->Type;
@@ -193,11 +197,13 @@ void generateCode(t_tree current)
 
 void popActuals(t_tree actual)
 {
+    eType type;
+
 	if (actual == NULL)
 		return;
 
-	popActuals(actual->Node.Actual.Expr);
 	type = typeCheck(actual->Node.Actual.Expr);
 	emit_pop(codeBuffer, type == STRING ? 100 : 1);
+    popActuals(actual->Node.Actual.Next);
 	return;
 }
