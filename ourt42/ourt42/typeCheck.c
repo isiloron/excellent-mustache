@@ -101,6 +101,8 @@ eType typeCheck(t_tree current)
 				fprintf(stderr, "Right and left operand, are not of the same type! Line: %d ", current->LineNr);
 				return INVALID_TYPE;
 			}
+			else
+				return left;
 		}
 		else
 		{
@@ -115,7 +117,7 @@ eType typeCheck(t_tree current)
 	case kFuncCallExpr:
 		return typeCheck(current->Node.FuncCallExpr.Actuals);
 	case kRValue:
-		return lookup(funcVars, current->Node.RValue.Id);
+		return lookup(current->Node.RValue.Id);
 	default:
 		fprintf(stderr, "What the hell is this shit? 0o Line: %d ", current->LineNr);
 		return INVALID_TYPE;
