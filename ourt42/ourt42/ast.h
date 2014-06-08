@@ -206,6 +206,7 @@ typedef struct s_SymTabData {
     int Offset;
     eType Type;
 	t_tree Vars;
+	int funcStart;
 } SymTabData;
 
 extern t_tree treeRoot;

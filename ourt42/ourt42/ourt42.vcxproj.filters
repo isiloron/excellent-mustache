@@ -43,6 +43,9 @@
     <ClCompile Include="offsetCalc.c">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="codeGen.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="array.h">
@@ -85,6 +88,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="offsetCalc.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="codeGen.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
