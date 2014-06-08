@@ -8,7 +8,7 @@ int localOffset;
 
 void offsetCalc(t_tree current)
 {
-    if (current = NULL)
+    if (current == NULL)
         return;
 
     switch (current->Kind)

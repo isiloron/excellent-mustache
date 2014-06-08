@@ -2001,11 +2001,11 @@ int main (int argc, char *argv[])
          syntax_errors = yyparse();
          if (!syntax_errors) {
             fprintf (stderr, "No syntax errors.\n");
-			system("PAUSE");
          } else {
             fprintf (stderr, "There were syntax errors.\n");
          }
          semanticAnalysis();
+         system("PAUSE");
          free(basename);
          free(objname);
          free(lstname);
