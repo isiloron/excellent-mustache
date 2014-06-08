@@ -146,7 +146,11 @@ eType typeCheck(t_tree current)
             return INVALID_TYPE;
         }
 	case kRValue:
+<<<<<<< HEAD
+		return lookup(current->Node.RValue.Id);
+=======
 		return lookup(varSymTab, current->Node.RValue.Id);
+>>>>>>> ed81a590f865d19a9ad8b10753393aa929a0ff9f
 	default:
 		return VALID_TYPE;
 	}

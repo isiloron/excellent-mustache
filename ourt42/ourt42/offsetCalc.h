@@ -1,6 +1,8 @@
 #ifndef OFFSETCALC_H
 #define OFFSETCALC_H
 
-int offsetCalc();
+#include "ast.h"
+
+void offsetCalc(t_tree current);
 
 #endif
