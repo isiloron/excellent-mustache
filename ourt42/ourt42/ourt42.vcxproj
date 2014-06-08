@@ -67,6 +67,7 @@
   <ItemGroup>
     <ClInclude Include="array.h" />
     <ClInclude Include="ast.h" />
+    <ClInclude Include="codeGen.h" />
     <ClInclude Include="nameAnalysis.h" />
     <ClInclude Include="emit.h" />
     <ClInclude Include="hash.h" />
@@ -83,6 +84,7 @@
   <ItemGroup>
     <ClCompile Include="array.c" />
     <ClCompile Include="ast.c" />
+    <ClCompile Include="codeGen.c" />
     <ClCompile Include="nameAnalysis.c" />
     <ClCompile Include="emit.c" />
     <ClCompile Include="hash.c" />

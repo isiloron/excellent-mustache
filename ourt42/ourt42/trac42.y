@@ -24,6 +24,7 @@
 #include "emit.h"
 #include "trac42.y.h"   /* Declaration of tokens, genereated by bison. */
 #include "semanticAnalysis.h"
+#include "codeGen.h"
 
 extern FILE *yyin;
 int yyerror(const char *s);
@@ -175,9 +176,12 @@ int main (int argc, char *argv[])
          } else {
             fprintf (stderr, "There were syntax errors.\n");
          }
-         semanticAnalysis();
-         system("PAUSE");
-         free(basename);
+         
+		 semanticAnalysis();
+		 codeGen(lstname);
+		 system("PAUSE");
+
+		 free(basename);
          free(objname);
          free(lstname);
       }
