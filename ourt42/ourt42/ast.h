@@ -204,6 +204,7 @@ struct t_tree {
 
 typedef struct s_SymTabData {
     int Offset;
+    int RetValOffset;
     eType Type;
 	t_tree Vars;
 	int funcStart;

@@ -139,7 +139,7 @@ actuals     : exprs {$$ = $1;}
             | {$$ = NULL;}
             ;
 
-exprs       : exprs ',' expr {$$ = connectActuals($1, mActual($3));}
+exprs       : exprs ',' expr {$$ = connectActuals($1, $3);}
             | expr {$$ = mActual($1);}
             ;
 
@@ -164,11 +164,11 @@ int main (int argc, char *argv[])
             *p = 0;
          }
          objname = malloc(strlen(basename) + 5);
-         lstname = malloc(strlen(basename) + 9);
+         lstname = malloc(strlen(basename) + 5);
          strcpy(objname, basename);
          strcpy(lstname, basename);
          strcat(objname, ".obj");
-         strcat(lstname, "_Our.lst");
+         strcat(lstname, ".lst");
 
          syntax_errors = yyparse();
          if (!syntax_errors) {
@@ -176,12 +176,17 @@ int main (int argc, char *argv[])
          } else {
             fprintf (stderr, "There were syntax errors.\n");
          }
+<<<<<<< HEAD
+         semanticAnalysis();
+         system("PAUSE");
+         free(basename);
+=======
          
 		 semanticAnalysis();
 		 codeGen(lstname);
-		 system("PAUSE");
 
 		 free(basename);
+>>>>>>> 8f13e6becf16e785040d9ebdde41eef6a37fdc05
          free(objname);
          free(lstname);
       }
