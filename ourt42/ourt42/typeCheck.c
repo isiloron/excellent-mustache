@@ -2,8 +2,6 @@
 #include "typeCheck.h"
 #include "ast.h"
 
-
-
 eType left;
 eType right;
 eType exprType;
