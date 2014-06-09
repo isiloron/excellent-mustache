@@ -10,10 +10,10 @@
 /*Start function*/
 void codeGen(char* lstname);
 
-/*Function generates track42 code, by traversing the token-tree recurevley*/
+/*Function generates track42 code, by traversing the token-tree recursively*/
 void generateCode(t_tree current);
 
-/*Function pops the correct amount of arguments recurevley, after a funcCall on the stack*/
+/*Function pops the correct amount of arguments recursively, after a funcCall on the stack*/
 void popActuals(t_tree actual);
 
 #endif

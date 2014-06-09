@@ -2,123 +2,123 @@
 #include "ast.h"
 #include "printAST.h"
 
-void printAST(t_tree currentNode)
+void printAST(t_tree current)
 {
-	if (currentNode == NULL)
+    if (current == NULL)
 		return;
 
-	switch (currentNode->Kind)
+    switch (current->Kind)
 	{
 	case kProgram:
-		printAST(currentNode->Node.Program.Functions);
+        printAST(current->Node.Program.Functions);
 		return;
 	case kFunction:
-		printType(currentNode->Node.Function.Type);
-		printf(currentNode->Node.Function.Name);
-		printAST(currentNode->Node.Function.Variables);
-		printAST(currentNode->Node.Function.Stmnts);
-		printAST(currentNode->Node.Function.Next);
+        printType(current->Node.Function.Type);
+        printf(current->Node.Function.Name);
+        printAST(current->Node.Function.Variables);
+        printAST(current->Node.Function.Stmnts);
+        printAST(current->Node.Function.Next);
 		return;
 	case kVariable:
-		if (currentNode->Node.Variable.VarKind == kFormal)
+        if (current->Node.Variable.VarKind == kFormal)
 			printf("(formal) ");
 		else
 			printf("(local) ");
 
-		printType(currentNode->Node.Variable.Type);
-		printf(currentNode->Node.Variable.Name);
-		printAST(currentNode->Node.Variable.Next);
+        printType(current->Node.Variable.Type);
+        printf(current->Node.Variable.Name);
+        printAST(current->Node.Variable.Next);
 		return;
 	case kAssign:
-		printf(currentNode->Node.Assign.Id);
+        printf(current->Node.Assign.Id);
 		printf(" = ");
-		printAST(currentNode->Node.Assign.Expr);
-		printAST(currentNode->Node.Assign.Next);
+        printAST(current->Node.Assign.Expr);
+        printAST(current->Node.Assign.Next);
 		return;
 	case kIf:
 		printf("if(");
-		printAST(currentNode->Node.If.Expr);
+        printAST(current->Node.If.Expr);
 		printf(")\n{\n");
-		printAST(currentNode->Node.If.Then);
+        printAST(current->Node.If.Then);
 		printf("\n}");
-		if (currentNode->Node.If.Else != NULL)
+        if (current->Node.If.Else != NULL)
 		{
 			printf("else\n{\n");
-			printAST(currentNode->Node.If.Else);
+            printAST(current->Node.If.Else);
 			printf("\n}\n");
 		}
-		printAST(currentNode->Node.If.Next);
+        printAST(current->Node.If.Next);
 		return;
 	case kWhile:
 		printf("while(");
-		printAST(currentNode->Node.While.Expr);
+        printAST(current->Node.While.Expr);
 		printf(")\n{\n");
-		printAST(currentNode->Node.While.Stmnt);
+        printAST(current->Node.While.Stmnt);
 		printf("}\n");
-		printAST(currentNode->Node.While.Next);
+        printAST(current->Node.While.Next);
 		return;
 	case kRead:
 		printf("read ");
-		printf(currentNode->Node.Read.Id);
+        printf(current->Node.Read.Id);
 		printf(";\n");
-		printAST(currentNode->Node.Read.Next);
+        printAST(current->Node.Read.Next);
 		return;
 	case kWrite:
 		printf("write ");
-		printAST(currentNode->Node.Write.Expr);
+        printAST(current->Node.Write.Expr);
 		printf(";\n");
-		printAST(currentNode->Node.Write.Next);
+        printAST(current->Node.Write.Next);
 		return;
 	case kReturn:
 		printf("return ");
-		printAST(currentNode->Node.Return.Expr);
+        printAST(current->Node.Return.Expr);
 		printf(";\n");
-		printAST(currentNode->Node.Return.Next);
+        printAST(current->Node.Return.Next);
 		return;
 	case kFuncCallStmnt:
-		printf(currentNode->Node.FuncCallStmnt.FuncName);
+		printf(current->Node.FuncCallStmnt.FuncName);
 		printf("(");
-		printAST(currentNode->Node.FuncCallStmnt.Actuals);
+		printAST(current->Node.FuncCallStmnt.Actuals);
 		printf(");\n");
-		printAST(currentNode->Node.FuncCallStmnt.Next);
+		printAST(current->Node.FuncCallStmnt.Next);
 		return;
 	case kActual:
-		printAST(currentNode->Node.Actual.Expr);
-		if (currentNode->Node.Actual.Next != NULL)
+		printAST(current->Node.Actual.Expr);
+		if (current->Node.Actual.Next != NULL)
 			printf(", ");
-		printAST(currentNode->Node.Actual.Next);
+		printAST(current->Node.Actual.Next);
 		return;
 	case kUnary:
-		if (currentNode->Node.Unary.Operator == NOT)
+		if (current->Node.Unary.Operator == NOT)
 			printf("!");
 		else
 			printf("-");
-		printAST(currentNode->Node.Unary.Expr);
+		printAST(current->Node.Unary.Expr);
 		return;
 	case kBinary:
-		printAST(currentNode->Node.Binary.LeftOperand);
-		printOperator(currentNode->Node.Binary.Operator);
-		printAST(currentNode->Node.Binary.RightOperand);
+		printAST(current->Node.Binary.LeftOperand);
+		printOperator(current->Node.Binary.Operator);
+		printAST(current->Node.Binary.RightOperand);
 		return;
 	case kIntConst:
-		printf("%d", currentNode->Node.IntConst.Value);
+		printf("%d", current->Node.IntConst.Value);
 		return;
 	case kBoolConst:
-		currentNode->Node.BoolConst.Value == 1 ?
+		current->Node.BoolConst.Value == 1 ?
 			printf("true") :
 			printf("false");
 		return;
 	case kStringConst:
-		printf(currentNode->Node.StringConst.Value);
+		printf(current->Node.StringConst.Value);
 		return;
 	case kFuncCallExpr:
-		printf(currentNode->Node.FuncCallExpr.FuncName);
+		printf(current->Node.FuncCallExpr.FuncName);
 		printf("(");
-		printAST(currentNode->Node.FuncCallExpr.Actuals);
+		printAST(current->Node.FuncCallExpr.Actuals);
 		printf(")\n");
 		return;
 	case kRValue:
-		printf(currentNode->Node.RValue.Id);
+		printf(current->Node.RValue.Id);
 		return;
 	default:
 		printf("Unknown node detected!\n");
