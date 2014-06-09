@@ -66,8 +66,7 @@ int yylex(void);
 
 %%
 
-program     : functions {treeRoot = mProgram($1);
-                          }
+program     : functions {treeRoot = mProgram($1);}
             ;
 
 functions   : functions function {$$ = connectFunctions($1,$2);}

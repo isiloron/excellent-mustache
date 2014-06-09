@@ -1,13 +1,13 @@
 
 #include <stdio.h>
+#include "offsetCalc.h"
 #include "ast.h"
 
+/*Global variables used by the recursive function "offsetCalc".*/
 t_symtab *varSymTab;
 t_symtab *funcSymTab;
 int formalOffset;
 int localOffset;
-int retValOffset;
-t_tree iterator;
 
 void offsetCalc(t_tree current)
 {
@@ -25,32 +25,7 @@ void offsetCalc(t_tree current)
         formalOffset = 2;
         localOffset = 0;
         offsetCalc(current->Node.Function.Variables);
-        
-        iterator = current->Node.Function.Variables;
-        retValOffset = 2;
-        while (iterator != NULL)
-        {
-            if (iterator->Node.Variable.VarKind == kLocal)
-                iterator = NULL;
-            else
-            {
-                switch (iterator->Node.Variable.Type)
-                {
-                case INT:
-                case BOOL:
-                    retValOffset += 1;
-                    break;
-                case STRING:
-                    retValOffset += 100;
-                    break;
-                default:
-                    break;
-                }
-                iterator = iterator->Node.Variable.Next;
-            }
-        }
-        ((SymTabData*)symtab_get(funcSymTab, current->Node.Function.Name))->RetValOffset = retValOffset;
-
+        retValOffsetCalc(current);
         offsetCalc(current->Node.Function.Next);
         return;
     case kVariable:
@@ -97,4 +72,35 @@ void offsetCalc(t_tree current)
     default:
         return;
     }
+}
+
+void retValOffsetCalc(t_tree function)
+{
+    t_tree iterator;
+    int retValOffset;
+
+    iterator = function->Node.Function.Variables;
+    retValOffset = 2;
+    while (iterator != NULL)
+    {
+        if (iterator->Node.Variable.VarKind == kLocal)
+            iterator = NULL;
+        else
+        {
+            switch (iterator->Node.Variable.Type)
+            {
+            case INT:
+            case BOOL:
+                retValOffset += INT_SIZE;
+                break;
+            case STRING:
+                retValOffset += STRING_SIZE;
+                break;
+            default:
+                break;
+            }
+            iterator = iterator->Node.Variable.Next;
+        }
+    }
+    ((SymTabData*)symtab_get(funcSymTab, function->Node.Function.Name))->RetValOffset = retValOffset;
 }

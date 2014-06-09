@@ -58,7 +58,7 @@ typedef enum {VOID, BOOL, INT, STRING, INVALID_TYPE, VALID_TYPE} eType;
 /* The program. */
 typedef struct {
    t_tree Functions;  /* A list of functions in the program. */
-   t_symtab *SymTab;
+   t_symtab *SymTab; /* Added to have a table of all the functions. */
 } yProgram;
 
 /* The function. */
@@ -68,7 +68,7 @@ typedef struct {
    t_tree Stmnts;     /* A list of statements at the top level in the funktion. */
    char *Name;       /* The function name. */
    eType Type;       /* The return type. */
-   t_symtab *SymTab;
+   t_symtab *SymTab; /* Added to have a table of all th variables in a function. */
 } yFunction;
 
 /* The variable (local variable or formal parameter). */
@@ -202,12 +202,15 @@ struct t_tree {
    } Node;
 };
 
+
+/* The symbol table data struct, used by both variables and functions.
+** Some members are used by one and not the other. */
 typedef struct s_SymTabData {
-    int Offset;
-    int RetValOffset;
-    eType Type;
-	t_tree Vars;
-	int funcStart;
+    int Offset; // Offset of variables in functions.
+    int RetValOffset; // Offset of a functions return value.
+    eType Type; // The type of a variable or the return type of a function. 
+	t_tree Vars; // A pointer to the syntax subtree with the varaibles (formals and locals) of a function.
+	int funcStart; // The line in the stack machine code where the function starts.
 } SymTabData;
 
 extern t_tree treeRoot;
