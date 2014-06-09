@@ -2008,7 +2008,7 @@ int main (int argc, char *argv[])
          
 		 semanticAnalysis();
 		 codeGen(lstname);
-         system("PAUSE");
+		 system("PAUSE");
 
 		 free(basename);
          free(objname);
