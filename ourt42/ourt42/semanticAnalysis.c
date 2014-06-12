@@ -5,17 +5,17 @@
 #include "offsetCalc.h"
 #include <stdio.h>
 
-void semanticAnalysis()
+int semanticAnalysis()
 {
     if (nameAnalysis(treeRoot) == 0)
-        return;
+        return 0;
     printf("Name analysis complete!\n");
     if (typeCheck(treeRoot) == INVALID_TYPE)
-        return;
+        return 0;
     printf("Type check complete!\n");
     offsetCalc(treeRoot);
     printf("Offset calculation complete!\n");
     
 
-    printAST(treeRoot);
+    //printAST(treeRoot);
 }

@@ -172,12 +172,12 @@ int main (int argc, char *argv[])
          syntax_errors = yyparse();
          if (!syntax_errors) {
             fprintf (stderr, "No syntax errors.\n");
+            if(semanticAnalysis())
+		        codeGen(lstname);
          } else {
             fprintf (stderr, "There were syntax errors.\n");
          }
          
-		 semanticAnalysis();
-		 codeGen(lstname);
 		 system("PAUSE");
 
 		 free(basename);

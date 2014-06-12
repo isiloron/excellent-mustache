@@ -495,11 +495,11 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    69,    69,    73,    74,    77,    80,    81,    82,    85,
-      86,    89,    92,    93,    96,    99,   100,   103,   106,   107,
-     110,   111,   112,   113,   114,   115,   116,   117,   118,   121,
-     122,   123,   124,   125,   126,   127,   128,   129,   130,   131,
-     132,   133,   134,   135,   138,   139,   142,   143
+       0,    69,    69,    72,    73,    76,    79,    80,    81,    84,
+      85,    88,    91,    92,    95,    98,    99,   102,   105,   106,
+     109,   110,   111,   112,   113,   114,   115,   116,   117,   120,
+     121,   122,   123,   124,   125,   126,   127,   128,   129,   130,
+     131,   132,   133,   134,   137,   138,   141,   142
 };
 #endif
 
@@ -1463,283 +1463,282 @@ yyreduce:
         case 2:
 /* Line 1792 of yacc.c  */
 #line 69 ".\\trac42.y"
-    {treeRoot = mProgram((yyvsp[(1) - (1)].yyNode));
-                          }
+    {treeRoot = mProgram((yyvsp[(1) - (1)].yyNode));}
     break;
 
   case 3:
 /* Line 1792 of yacc.c  */
-#line 73 ".\\trac42.y"
+#line 72 ".\\trac42.y"
     {(yyval.yyNode) = connectFunctions((yyvsp[(1) - (2)].yyNode),(yyvsp[(2) - (2)].yyNode));}
     break;
 
   case 4:
 /* Line 1792 of yacc.c  */
-#line 74 ".\\trac42.y"
+#line 73 ".\\trac42.y"
     {(yyval.yyNode) = (yyvsp[(1) - (1)].yyNode);}
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 77 ".\\trac42.y"
+#line 76 ".\\trac42.y"
     {(yyval.yyNode) = mFunction(connectVariables((yyvsp[(4) - (9)].yyNode),(yyvsp[(7) - (9)].yyNode)), (yyvsp[(8) - (9)].yyNode), (yyvsp[(2) - (9)].yyString).strVal, (yyvsp[(1) - (9)].yyType).type, (yyvsp[(2) - (9)].yyString).lineNr);}
     break;
 
   case 6:
 /* Line 1792 of yacc.c  */
-#line 80 ".\\trac42.y"
+#line 79 ".\\trac42.y"
     {(yyval.yyNode) = (yyvsp[(1) - (1)].yyNode);}
     break;
 
   case 7:
 /* Line 1792 of yacc.c  */
-#line 81 ".\\trac42.y"
+#line 80 ".\\trac42.y"
     {if ((yyvsp[(1) - (1)].yyType).type != VOID) { yyerror("invalid formal parameter list"); YYERROR; } (yyval.yyNode) = NULL;}
     break;
 
   case 8:
 /* Line 1792 of yacc.c  */
-#line 82 ".\\trac42.y"
+#line 81 ".\\trac42.y"
     {(yyval.yyNode) = NULL;}
     break;
 
   case 9:
 /* Line 1792 of yacc.c  */
-#line 85 ".\\trac42.y"
+#line 84 ".\\trac42.y"
     {(yyval.yyNode) = connectVariables((yyvsp[(1) - (3)].yyNode), (yyvsp[(3) - (3)].yyNode));}
     break;
 
   case 10:
 /* Line 1792 of yacc.c  */
-#line 86 ".\\trac42.y"
+#line 85 ".\\trac42.y"
     {(yyval.yyNode) = (yyvsp[(1) - (1)].yyNode);}
     break;
 
   case 11:
 /* Line 1792 of yacc.c  */
-#line 89 ".\\trac42.y"
+#line 88 ".\\trac42.y"
     {(yyval.yyNode) = mVariable(kFormal, (yyvsp[(2) - (2)].yyString).strVal, (yyvsp[(1) - (2)].yyType).type, (yyvsp[(2) - (2)].yyString).lineNr);}
     break;
 
   case 12:
 /* Line 1792 of yacc.c  */
-#line 92 ".\\trac42.y"
+#line 91 ".\\trac42.y"
     {(yyval.yyNode) = connectVariables((yyvsp[(1) - (2)].yyNode), (yyvsp[(2) - (2)].yyNode));}
     break;
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 93 ".\\trac42.y"
+#line 92 ".\\trac42.y"
     {(yyval.yyNode) = NULL;}
     break;
 
   case 14:
 /* Line 1792 of yacc.c  */
-#line 96 ".\\trac42.y"
+#line 95 ".\\trac42.y"
     {(yyval.yyNode) = addType((yyvsp[(2) - (3)].yyNode), (yyvsp[(1) - (3)].yyType).type);}
     break;
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 99 ".\\trac42.y"
+#line 98 ".\\trac42.y"
     {(yyval.yyNode) = connectVariables((yyvsp[(1) - (3)].yyNode), (yyvsp[(3) - (3)].yyNode));}
     break;
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 100 ".\\trac42.y"
+#line 99 ".\\trac42.y"
     {(yyval.yyNode) = (yyvsp[(1) - (1)].yyNode);}
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 103 ".\\trac42.y"
+#line 102 ".\\trac42.y"
     {(yyval.yyNode) = mVariable(kLocal, (yyvsp[(1) - (1)].yyString).strVal, VOID, (yyvsp[(1) - (1)].yyString).lineNr);}
     break;
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 106 ".\\trac42.y"
+#line 105 ".\\trac42.y"
     {(yyval.yyNode) = connectStmnts((yyvsp[(1) - (2)].yyNode),(yyvsp[(2) - (2)].yyNode));}
     break;
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 107 ".\\trac42.y"
+#line 106 ".\\trac42.y"
     {(yyval.yyNode) = NULL;}
     break;
 
   case 20:
 /* Line 1792 of yacc.c  */
-#line 110 ".\\trac42.y"
+#line 109 ".\\trac42.y"
     {(yyval.yyNode) = mAssign((yyvsp[(1) - (4)].yyString).strVal, (yyvsp[(3) - (4)].yyNode), (yyvsp[(1) - (4)].yyString).lineNr);}
     break;
 
   case 21:
 /* Line 1792 of yacc.c  */
-#line 111 ".\\trac42.y"
+#line 110 ".\\trac42.y"
     {(yyval.yyNode) = mIf((yyvsp[(3) - (7)].yyNode), (yyvsp[(5) - (7)].yyNode), (yyvsp[(7) - (7)].yyNode), (yyvsp[(1) - (7)].yyLineNr));}
     break;
 
   case 22:
 /* Line 1792 of yacc.c  */
-#line 112 ".\\trac42.y"
+#line 111 ".\\trac42.y"
     {(yyval.yyNode) = mIf((yyvsp[(3) - (5)].yyNode), (yyvsp[(5) - (5)].yyNode), NULL, (yyvsp[(1) - (5)].yyLineNr));}
     break;
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 113 ".\\trac42.y"
+#line 112 ".\\trac42.y"
     {(yyval.yyNode) = mWhile((yyvsp[(3) - (5)].yyNode), (yyvsp[(5) - (5)].yyNode), (yyvsp[(1) - (5)].yyLineNr));}
     break;
 
   case 24:
 /* Line 1792 of yacc.c  */
-#line 114 ".\\trac42.y"
+#line 113 ".\\trac42.y"
     {(yyval.yyNode) = mReturn((yyvsp[(2) - (3)].yyNode), (yyvsp[(1) - (3)].yyLineNr));}
     break;
 
   case 25:
 /* Line 1792 of yacc.c  */
-#line 115 ".\\trac42.y"
+#line 114 ".\\trac42.y"
     {(yyval.yyNode) = mRead((yyvsp[(2) - (3)].yyString).strVal, (yyvsp[(1) - (3)].yyLineNr));}
     break;
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 116 ".\\trac42.y"
+#line 115 ".\\trac42.y"
     {(yyval.yyNode) = mWrite((yyvsp[(2) - (3)].yyNode), (yyvsp[(1) - (3)].yyLineNr));}
     break;
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 117 ".\\trac42.y"
+#line 116 ".\\trac42.y"
     {(yyval.yyNode) = (yyvsp[(2) - (3)].yyNode);}
     break;
 
   case 28:
 /* Line 1792 of yacc.c  */
-#line 118 ".\\trac42.y"
+#line 117 ".\\trac42.y"
     {(yyval.yyNode) = mFuncCallStmnt((yyvsp[(3) - (5)].yyNode), (yyvsp[(1) - (5)].yyString).strVal, (yyvsp[(1) - (5)].yyString).lineNr);}
     break;
 
   case 29:
 /* Line 1792 of yacc.c  */
-#line 121 ".\\trac42.y"
+#line 120 ".\\trac42.y"
     {(yyval.yyNode) = mUnary((yyvsp[(1) - (2)].yyOperator).opType, (yyvsp[(2) - (2)].yyNode), (yyvsp[(1) - (2)].yyOperator).lineNr);}
     break;
 
   case 30:
 /* Line 1792 of yacc.c  */
-#line 122 ".\\trac42.y"
+#line 121 ".\\trac42.y"
     {(yyval.yyNode) = mUnary((yyvsp[(1) - (2)].yyOperator).opType, (yyvsp[(2) - (2)].yyNode), (yyvsp[(1) - (2)].yyOperator).lineNr);}
     break;
 
   case 31:
 /* Line 1792 of yacc.c  */
-#line 123 ".\\trac42.y"
+#line 122 ".\\trac42.y"
     {(yyval.yyNode) = mBinary((yyvsp[(1) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).opType, (yyvsp[(3) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).lineNr);}
     break;
 
   case 32:
 /* Line 1792 of yacc.c  */
-#line 124 ".\\trac42.y"
+#line 123 ".\\trac42.y"
     {(yyval.yyNode) = mBinary((yyvsp[(1) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).opType, (yyvsp[(3) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).lineNr);}
     break;
 
   case 33:
 /* Line 1792 of yacc.c  */
-#line 125 ".\\trac42.y"
+#line 124 ".\\trac42.y"
     {(yyval.yyNode) = mBinary((yyvsp[(1) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).opType, (yyvsp[(3) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).lineNr);}
     break;
 
   case 34:
 /* Line 1792 of yacc.c  */
-#line 126 ".\\trac42.y"
+#line 125 ".\\trac42.y"
     {(yyval.yyNode) = mBinary((yyvsp[(1) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).opType, (yyvsp[(3) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).lineNr);}
     break;
 
   case 35:
 /* Line 1792 of yacc.c  */
-#line 127 ".\\trac42.y"
+#line 126 ".\\trac42.y"
     {(yyval.yyNode) = mBinary((yyvsp[(1) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).opType, (yyvsp[(3) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).lineNr);}
     break;
 
   case 36:
 /* Line 1792 of yacc.c  */
-#line 128 ".\\trac42.y"
+#line 127 ".\\trac42.y"
     {(yyval.yyNode) = mBinary((yyvsp[(1) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).opType, (yyvsp[(3) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).lineNr);}
     break;
 
   case 37:
 /* Line 1792 of yacc.c  */
-#line 129 ".\\trac42.y"
+#line 128 ".\\trac42.y"
     {(yyval.yyNode) = mBinary((yyvsp[(1) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).opType, (yyvsp[(3) - (3)].yyNode), (yyvsp[(2) - (3)].yyOperator).lineNr);}
     break;
 
   case 38:
 /* Line 1792 of yacc.c  */
-#line 130 ".\\trac42.y"
+#line 129 ".\\trac42.y"
     {(yyval.yyNode) = (yyvsp[(2) - (3)].yyNode);}
     break;
 
   case 39:
 /* Line 1792 of yacc.c  */
-#line 131 ".\\trac42.y"
+#line 130 ".\\trac42.y"
     {(yyval.yyNode) = mFuncCallExpr((yyvsp[(3) - (4)].yyNode), (yyvsp[(1) - (4)].yyString).strVal, (yyvsp[(1) - (4)].yyString).lineNr);}
     break;
 
   case 40:
 /* Line 1792 of yacc.c  */
-#line 132 ".\\trac42.y"
+#line 131 ".\\trac42.y"
     {(yyval.yyNode) = mRValue((yyvsp[(1) - (1)].yyString).strVal, (yyvsp[(1) - (1)].yyString).lineNr);}
     break;
 
   case 41:
 /* Line 1792 of yacc.c  */
-#line 133 ".\\trac42.y"
+#line 132 ".\\trac42.y"
     {(yyval.yyNode) = mIntConst((yyvsp[(1) - (1)].yyInt).intVal, (yyvsp[(1) - (1)].yyInt).lineNr);}
     break;
 
   case 42:
 /* Line 1792 of yacc.c  */
-#line 134 ".\\trac42.y"
+#line 133 ".\\trac42.y"
     {(yyval.yyNode) = mBoolConst((yyvsp[(1) - (1)].yyInt).intVal, (yyvsp[(1) - (1)].yyInt).lineNr);}
     break;
 
   case 43:
 /* Line 1792 of yacc.c  */
-#line 135 ".\\trac42.y"
+#line 134 ".\\trac42.y"
     {(yyval.yyNode) = mStringConst((yyvsp[(1) - (1)].yyString).strVal, (yyvsp[(1) - (1)].yyString).lineNr);}
     break;
 
   case 44:
 /* Line 1792 of yacc.c  */
-#line 138 ".\\trac42.y"
+#line 137 ".\\trac42.y"
     {(yyval.yyNode) = (yyvsp[(1) - (1)].yyNode);}
     break;
 
   case 45:
 /* Line 1792 of yacc.c  */
-#line 139 ".\\trac42.y"
+#line 138 ".\\trac42.y"
     {(yyval.yyNode) = NULL;}
     break;
 
   case 46:
 /* Line 1792 of yacc.c  */
-#line 142 ".\\trac42.y"
+#line 141 ".\\trac42.y"
     {(yyval.yyNode) = connectActuals((yyvsp[(1) - (3)].yyNode), mActual((yyvsp[(3) - (3)].yyNode)));}
     break;
 
   case 47:
 /* Line 1792 of yacc.c  */
-#line 143 ".\\trac42.y"
+#line 142 ".\\trac42.y"
     {(yyval.yyNode) = mActual((yyvsp[(1) - (1)].yyNode));}
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1743 ".\\trac42.y.c"
+#line 1742 ".\\trac42.y.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1971,7 +1970,7 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 146 ".\\trac42.y"
+#line 145 ".\\trac42.y"
 
 int main (int argc, char *argv[])
 {
@@ -2002,12 +2001,12 @@ int main (int argc, char *argv[])
          syntax_errors = yyparse();
          if (!syntax_errors) {
             fprintf (stderr, "No syntax errors.\n");
+            if(semanticAnalysis())
+		        codeGen(lstname);
          } else {
             fprintf (stderr, "There were syntax errors.\n");
          }
          
-		 semanticAnalysis();
-		 codeGen(lstname);
 		 system("PAUSE");
 
 		 free(basename);

@@ -2,16 +2,18 @@
 #include "typeCheck.h"
 #include "ast.h"
 
-eType left;
-eType right;
-eType exprType;
-UNOP_KIND unaryOp;
-BINOP_KIND binaryOp;
+
 t_symtab *funcSymTab, *varSymTab;
 char *currentFuncName;
 
 eType typeCheck(t_tree current)
 {
+    eType left;
+    eType right;
+    eType exprType;
+    UNOP_KIND unaryOp;
+    BINOP_KIND binaryOp;
+
 	if (current == NULL)
 		return VALID_TYPE;
 
@@ -38,7 +40,7 @@ eType typeCheck(t_tree current)
 		}
 	case kIf:
         exprType = typeCheck(current->Node.If.Expr);
-        if (exprType != BOOL && exprType != INT)
+        if (exprType != BOOL)
         {
             fprintf(stderr,"Unexpected type in condition! Line: %d\n",current->LineNr);
             return INVALID_TYPE;
@@ -51,7 +53,7 @@ eType typeCheck(t_tree current)
 			return INVALID_TYPE;
 	case kWhile:
         exprType = typeCheck(current->Node.While.Expr);
-        if (exprType != BOOL && exprType != INT)
+        if (exprType != BOOL)
         {
             fprintf(stderr, "Unexpected type in condition! Line: %d\n", current->LineNr);
             return INVALID_TYPE;
@@ -59,6 +61,16 @@ eType typeCheck(t_tree current)
 		else if (typeCheck(current->Node.While.Stmnt) == VALID_TYPE
 			&& typeCheck(current->Node.While.Next) == VALID_TYPE)
 			return VALID_TYPE;
+        else
+            return INVALID_TYPE;
+    case kRead:
+        if (((SymTabData*)symtab_get(varSymTab,current->Node.Read.Id))->Type != INVALID_TYPE)
+            return typeCheck(current->Node.Read.Next);
+        else
+            return INVALID_TYPE;
+    case kWrite:
+        if (typeCheck(current->Node.Write.Expr) != INVALID_TYPE)
+            return typeCheck(current->Node.Write.Next);
         else
             return INVALID_TYPE;
 	case kReturn:
@@ -89,7 +101,7 @@ eType typeCheck(t_tree current)
         unaryOp = current->Node.Unary.Operator;
 
         if (unaryOp == NOT
-            && (exprType == BOOL || exprType == INT))
+            && exprType == BOOL)
             return BOOL;
         else if (unaryOp == NEG
             && exprType == INT)
@@ -104,30 +116,49 @@ eType typeCheck(t_tree current)
 		right = typeCheck(current->Node.Binary.RightOperand);
         binaryOp = current->Node.Binary.Operator;
 
-		if (left == INVALID_TYPE || right == INVALID_TYPE)
-		{
-			fprintf(stderr, "Invalid type! Line: %d ", current->LineNr);
-			return INVALID_TYPE;
-		}
-		else if (left == STRING || left == VOID || right == STRING || right == VOID)
-		{
-			fprintf(stderr, "Binary expresion type is incorrect! Line: %d ", current->LineNr);
-			return INVALID_TYPE;
-		}
-		else if (left != right)
-		{
-			if (!((left == BOOL && right == INT) && -1 < right < 2) || !((right == BOOL && left == INT) && -1 < left < 2))
-			{
-				fprintf(stderr, "Right and left operand, are not of the same type! Line: %d ", current->LineNr);
-				return INVALID_TYPE;
-			}
-			else
-				return left;
-		}
-		else
-		{
-			return left;
-		}
+        switch (binaryOp)
+        {
+        case PLUS:
+        case MINUS:
+        case MULT:
+        case DIV:
+            if (left == INT && right == INT)
+                return INT;
+            else
+            {
+                fprintf(stderr, "Binary operator type error! Requires INT operands! Line: %d\n", current->LineNr);
+                return INVALID_TYPE;
+            }
+        case OR:
+        case AND:
+            if (left == BOOL && right == BOOL)
+                return BOOL;
+            else
+            {
+                fprintf(stderr, "Binary operator type error! Requires BOOL operands! Line: %d\n", current->LineNr);
+                return INVALID_TYPE;
+            }
+        case EQ:
+            if (left != INVALID_TYPE && right != INVALID_TYPE && left == right)
+                return BOOL;
+            else
+            {
+                fprintf(stderr, "Binary operator type error! Line: %d\n", current->LineNr);
+                return INVALID_TYPE;
+            }
+        case LT:
+        case LE:
+            if (left == right && left != BOOL && right != BOOL)
+                return BOOL;
+            else
+            {
+                fprintf(stderr, "Binary operator type error! Line: %d\n", current->LineNr);
+                return INVALID_TYPE;
+            }
+        default:
+            fprintf(stderr, "Unexpected binary operator! Line: %d\n",current->LineNr);
+            return INVALID_TYPE;
+        }
 	case kIntConst:
 		return INT;
 	case kBoolConst:
@@ -163,22 +194,19 @@ eType checkActuals(t_tree actual, t_tree parameter)
 {
     if (actual == NULL)
     {
-        if (parameter == NULL)
+        if (parameter == NULL
+            || parameter->Node.Variable.VarKind == kLocal)
             return VALID_TYPE;
-        else if (parameter->Node.Variable.VarKind == kLocal)
-            return VALID_TYPE;
-        else //paramter is formal
+        else
             return INVALID_TYPE;
     }
     else //actual != null
     {
-        if (parameter == NULL)
+        if (parameter == NULL
+            || parameter->Node.Variable.VarKind == kLocal
+            || typeCheck(actual->Node.Actual.Expr) != parameter->Node.Variable.Type)
             return INVALID_TYPE;
-        else if (parameter->Node.Variable.VarKind == kLocal)
-            return INVALID_TYPE;
-        else if (typeCheck(actual->Node.Actual.Expr) == parameter->Node.Variable.Type)
-            return checkActuals(actual->Node.Actual.Next, parameter->Node.Variable.Next);
         else
-            return INVALID_TYPE;
+            return checkActuals(actual->Node.Actual.Next, parameter->Node.Variable.Next);
     }
 }
