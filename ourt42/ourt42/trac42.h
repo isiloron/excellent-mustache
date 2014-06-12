@@ -5,6 +5,8 @@
    REVISION:    1.0, 960917, Christer Eriksson & Jukka M„ki-Turja
    DESCRIPTION: Various defines and type definitons
 */
+
+
 #ifndef _TRAC42__H_
 #define _TRAC42__H_
 

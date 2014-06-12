@@ -10,6 +10,22 @@
                 and compiled to a syntax checker. Contains the basics for syntax checking. To
                 be extended with semantic rules for building an AST, and calls to name analysis,
                 type analysis, offset calculation and code generation. Plug in trac42.l as scanner.
+
+Compiler theory - spring 2014
+
+Lab 3:
+Semantic analysis and generating track42 code with Lex and Bison
+
+Students:	Linus Järvelä		(lja08001)
+			Stefan Danielsson	(sdn08003)
+
+Files added:
+	- printAST.h, printAST.c
+	- typeCheck.h, typeCheck.c
+	- codeGen.h, codeGen.c
+	- offsetCalc.h, offsetCalc.c
+	- semanticAnalysis.h, semanticAnalysis.c
+	- nameAnalysis.h, nameAnalysis.c
 */
 
 %{
